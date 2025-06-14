@@ -74,6 +74,7 @@ class UDPClient:
                     resp_parts = response.split()
                     if (len(resp_parts) >= 9 and resp_parts[0] == "FILE" and
                             resp_parts[1] == filename and resp_parts[2] == "OK"):
+
                         data_start = int(resp_parts[4])
                         data_end = int(resp_parts[6])
                         base64_data = ' '.join(resp_parts[8:])
@@ -85,3 +86,36 @@ class UDPClient:
 
                         bytes_received += len(binary_data)
                         print('*', end='', flush=True)
+                    else:
+                        print(f"Invalid data response: {response}")
+                        return
+
+                # File download complete, send close message
+                close_msg = f"FILE {filename} CLOSE"
+                response = self.send_and_receive(close_msg, self.server_host, data_port)
+
+                if response and response == f"FILE {filename} CLOSE_OK":
+                    print(f"\nSuccessfully downloaded {filename}")
+                else:
+                    print(f"\nDownload complete but didn't receive proper close confirmation for {filename}")
+
+        except Exception as e:
+            print(f"\nError downloading file {filename}: {e}")
+            if os.path.exists(filename):
+                os.remove(filename)
+
+    def send_and_receive(self, message, host, port, retries=0):
+        if retries >= self.max_retries:
+            return None
+
+        try:
+            self.socket.sendto(message.encode(), (host, port))
+
+            current_timeout = self.socket.gettimeout()
+            try:
+                response, _ = self.socket.recvfrom(4096)
+                return response.decode().strip()
+            except socket.timeout:
+                print(f"Timeout (attempt {retries + 1}), retrying...")
+                self.socket.settimeout(current_timeout * 2)  # Double the timeout
+                return self.send_and_receive(message, host, port, retries + 1)
