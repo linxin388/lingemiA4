@@ -72,3 +72,15 @@ class UDPServer:
 
         except Exception as e:
             print(f"Error handling download for {filename}: {e}")
+
+
+if __name__ == "__main__":
+    import sys
+
+    if len(sys.argv) != 2:
+        print("Usage: python3 UDPserver.py <port>")
+        sys.exit(1)
+
+    port = int(sys.argv[1])
+    server = UDPServer(port)
+    server.start()
