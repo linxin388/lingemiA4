@@ -53,7 +53,6 @@ class UDPClient:
         data_port = int(parts[5])
         print(f"Downloading {filename} (size: {file_size} bytes)")
 
-        # Step 2: Download file in chunks
         try:
             with open(filename, 'wb') as file:
                 bytes_received = 0
@@ -119,3 +118,20 @@ class UDPClient:
                 print(f"Timeout (attempt {retries + 1}), retrying...")
                 self.socket.settimeout(current_timeout * 2)  # Double the timeout
                 return self.send_and_receive(message, host, port, retries + 1)
+
+        except Exception as e:
+            print(f"Error in send_and_receive: {e}")
+            return None
+
+
+if __name__ == "__main__":
+    if len(sys.argv) != 4:
+        print("Usage: python3 UDPclient.py <host> <port> <file_list>")
+        sys.exit(1)
+
+    host = sys.argv[1]
+    port = int(sys.argv[2])
+    file_list = sys.argv[3]
+
+    client = UDPClient(host, port, file_list)
+    client.download_files()
