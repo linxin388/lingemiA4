@@ -64,3 +64,12 @@ class UDPServer:
                             encoded_data = base64.b64encode(chunk).decode()
                             response = f"FILE {filename} OK START {start} END {end} DATA {encoded_data}"
                             client_socket.sendto(response.encode(), client_addr)
+
+                        elif len(parts) >= 3 and parts[2] == "CLOSE":
+                            # Close request
+                            response = f"FILE {filename} CLOSE_OK"
+                            client_socket.sendto(response.encode(), client_addr)
+                            print(f"File transfer completed for {filename} to {client_address}")
+                            break
+
+            client_socket.close()
