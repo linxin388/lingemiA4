@@ -26,3 +26,10 @@ def start(self):
                 print(f"Invalid request from {client_address}: {client_request}")
 
 
+ def handle_download(self, filename, client_address):
+        try:
+            if not os.path.exists(filename):
+                error_msg = f"ERR {filename} NOT_FOUND"
+                self.welcome_socket.sendto(error_msg.encode(), client_address)
+                print(f"File not found: {filename} for {client_address}")
+                return
