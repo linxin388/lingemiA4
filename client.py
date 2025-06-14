@@ -51,3 +51,37 @@ class UDPClient:
         # Parse OK response
         file_size = int(parts[3])
         data_port = int(parts[5])
+        print(f"Downloading {filename} (size: {file_size} bytes)")
+
+        # Step 2: Download file in chunks
+        try:
+            with open(filename, 'wb') as file:
+                bytes_received = 0
+                block_size = 1000  # bytes per request
+
+                while bytes_received < file_size:
+                    start = bytes_received
+                    end = min(start + block_size - 1, file_size - 1)
+
+                    file_msg = f"FILE {filename} GET START {start} END {end}"
+                    response = self.send_and_receive(file_msg, self.server_host, data_port)
+
+                    if not response:
+                        print(f"Failed to receive data block {start}-{end} after {self.max_retries} attempts")
+                        return
+
+                    # Parse data response
+                    resp_parts = response.split()
+                    if (len(resp_parts) >= 9 and resp_parts[0] == "FILE" and
+                            resp_parts[1] == filename and resp_parts[2] == "OK"):
+                        data_start = int(resp_parts[4])
+                        data_end = int(resp_parts[6])
+                        base64_data = ' '.join(resp_parts[8:])
+
+                        # Decode and write data
+                        binary_data = base64.b64decode(base64_data)
+                        file.seek(data_start)
+                        file.write(binary_data)
+
+                        bytes_received += len(binary_data)
+                        print('*', end='', flush=True)
