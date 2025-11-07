@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- Top Banner -->
+    <TextView
+        android:id="@+id/titleBanner"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/app_name_campus"
+        android:textSize="40sp"
+        android:gravity="center"
+        android:padding="20dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Grid container for four buttons -->
+    <GridLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:rowCount="2"
+        android:columnCount="2"
+        android:padding="20dp"
+        app:layout_constraintTop_toBottomOf="@id/titleBanner"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <!-- Facilities Button -->
+        <ImageButton
+            android:id="@+id/btnFacilities"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_row="0"
+            android:layout_column="0"
+            android:layout_rowWeight="1"
+            android:layout_columnWeight="1"
+            android:src="@drawable/img_btn_facilities"
+            android:background="@android:color/transparent"
+            android:contentDescription="@string/facilities"
+            android:backgroundTint="@drawable/button_selector"
+            android:padding="20dp" />
+
+        <!-- Events Button -->
+        <ImageButton
+            android:id="@+id/btnEvents"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_row="0"
+            android:layout_column="1"
+            android:layout_rowWeight="1"
+            android:layout_columnWeight="1"
+            android:src="@drawable/img_btn_events"
+            android:background="@android:color/transparent"
+            android:contentDescription="@string/events"
+            android:backgroundTint="@drawable/button_selector"
+            android:padding="20dp" />
+
+        <!-- Clubs Button -->
+        <ImageButton
+            android:id="@+id/btnClubs"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_row="1"
+            android:layout_column="0"
+            android:layout_rowWeight="1"
+            android:layout_columnWeight="1"
+            android:src="@drawable/img_btn_clubs"
+            android:background="@android:color/transparent"
+            android:contentDescription="@string/clubs"
+            android:backgroundTint="@drawable/button_selector"
+            android:padding="20dp" />
+
+        <!-- Support Button -->
+        <ImageButton
+            android:id="@+id/btnSupport"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_row="1"
+            android:layout_column="1"
+            android:layout_rowWeight="1"
+            android:layout_columnWeight="1"
+            android:src="@drawable/img_btn_support"
+            android:background="@android:color/transparent"
+            android:contentDescription="@string/support"
+            android:backgroundTint="@drawable/button_selector"
+            android:padding="20dp" />
+
+    </GridLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
